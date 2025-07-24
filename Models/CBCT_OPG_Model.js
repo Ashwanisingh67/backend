@@ -19,7 +19,7 @@ const CBCT_OPG_Schema = new mongoose.Schema({
         trim: true,     
         lowercase: true,
         match: [/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/, 'Please enter a valid email address'],
-        unique: true, // Ensure email is unique
+        unique: [true, 'Email already exists']
     },
     phoneNumber: {
         type: String,

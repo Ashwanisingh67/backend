@@ -5,7 +5,7 @@ const CBCI_OPG_registeration = async (req, res) => {
 
     // Validate required fields
     if (!centerName || !ownerName || !email || !phoneNumber || !website_url) {
-      return res.status(400).json({ message: 'Please fill all the required fields' });
+      return res.status(400).json({ message: 'Please fill all the required fields' ,success:false});
     }
 
     // Create a new CBCT_OPG document
@@ -21,10 +21,10 @@ const CBCI_OPG_registeration = async (req, res) => {
     // Save the document to the database
     await newCBCT_OPG.save();
     
-    res.status(201).json({ message: 'CBCT OPG registration successful', data: newCBCT_OPG });
+    res.status(201).json({ message: 'CBCT OPG registration successful',success:true, data: newCBCT_OPG });
   } catch (error) {
     console.error('Error during CBCT OPG registration:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500).json({ message: 'Internal server error',success:false });
   }
 }
 

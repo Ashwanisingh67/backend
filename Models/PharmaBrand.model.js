@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
-const diagnosticLabSchema = new mongoose.Schema({
-    labName: {
+const PharmaBrandSchema = new mongoose.Schema({
+    brandName: {
         type: String,
-        required: [true, 'Lab name is required'],
+        required: [true, 'Brand name is required'],
     },
    OwnerName:{
     type:String,
@@ -30,5 +30,5 @@ const diagnosticLabSchema = new mongoose.Schema({
          match: [/^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([\/\w .-]*)*\/?$/, 'Please enter a valid URL']
    }
 });
-const DiagnosticLab = mongoose.model('DiagnosticLab', diagnosticLabSchema);
-module.exports = DiagnosticLab;
+const PharmaBrand = mongoose.model('PharmaBrand', PharmaBrandSchema);
+module.exports = PharmaBrand;
