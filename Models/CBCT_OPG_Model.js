@@ -41,7 +41,7 @@ const CBCT_OPG_Schema = new mongoose.Schema({
 }
 
 
-})
+},{ timestamps: true });
 const CBCT_OPG_Model = mongoose.model('CBCT_OPG', CBCT_OPG_Schema);
 
 module.exports = CBCT_OPG_Model;
