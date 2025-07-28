@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev":"node index.js",
+    "dev": "node index.js",
     "start": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -13,7 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^6.0.0",
-    "cloudinary": "^2.7.0",
+    "cloudinary": "^1.41.3",
     "cors": "^2.8.5",
     "datauri": "^4.1.0",
     "dataurl": "^0.1.0",
