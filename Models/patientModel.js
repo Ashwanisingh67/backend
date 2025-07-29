@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const userSchema = new mongoose.Schema({
+const patientSchema = new mongoose.Schema({
     name: {
     type: String,
         required: [true, 'Center name is required'],
@@ -26,6 +26,25 @@ const userSchema = new mongoose.Schema({
         trim: true,
         minlength: 6
     },
+    CBCT_OPG_appointments:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"CBCT_OPG"
+        }
+    ],
+    dentalClinic_appointments:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"DentalRegistration"
+        }
+    ],
+    diagnostic_appointments:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"DiagnosticLab"
+        }
+    ]
+     
 }, { timestamps: true })
-const userModel = mongoose.model('User', userSchema);
-module.exports = userModel;
+const patientModule = mongoose.model('Patient', patientSchema);
+module.exports = patientModule;

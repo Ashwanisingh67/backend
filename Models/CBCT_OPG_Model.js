@@ -38,8 +38,13 @@ const CBCT_OPG_Schema = new mongoose.Schema({
     type: String,
     trim: true,
     match: [/^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([\/\w .-]*)*(\?.*)?$/, 'Please enter a valid website URL']
-}
-
+},
+appointments:[
+    {
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Appointment"
+    }
+]
 
 })
 const CBCT_OPG_Model = mongoose.model('CBCT_OPG', CBCT_OPG_Schema);
