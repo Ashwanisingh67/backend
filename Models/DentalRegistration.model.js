@@ -30,7 +30,13 @@ const dentalRegistrationSchema = new mongoose.Schema({
    type: String,
    required: [true, 'Qualification is required'],
    trim: true
- }
+ },
+ appointments:[
+     {
+         type:mongoose.Schema.Types.ObjectId,
+         ref:"Appointment"
+     }
+ ]
  });
 
 const DentalRegistration = mongoose.model('DentalRegistration', dentalRegistrationSchema);

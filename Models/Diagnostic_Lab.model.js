@@ -28,7 +28,13 @@ const diagnosticLabSchema = new mongoose.Schema({
        type: String,
          required: [true, 'Website URL is required'],
          match: [/^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([\/\w .-]*)*\/?$/, 'Please enter a valid URL']
-   }
+   },
+   appointments:[
+       {
+           type:mongoose.Schema.Types.ObjectId,
+           ref:"Appointment"
+       }
+   ]
 });
 const DiagnosticLab = mongoose.model('DiagnosticLab', diagnosticLabSchema);
 module.exports = DiagnosticLab;
