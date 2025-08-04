@@ -7,6 +7,7 @@ const diagnosticLab=require('./Router/DiagnosticLabsRoutes')
 const Contact_US=require('./Router/Contact_Us_route');
 const PharmaBrand=require('./Router/PharmaBrandRoute');
 const patientRoute=require('./Router/patientRoute')
+const fixMyTeeth = require('./Router/Fixmyteeth');
 require('dotenv').config();
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -22,9 +23,9 @@ app.use('/', Cbci_opg_data);
 app.use('/', DentalRegistration);
 app.use('/', diagnosticLab);
 app.use('/',PharmaBrand)
-<<<<<<< HEAD
-app.use('/',UserRoute)
 app.use('/', Contact_US);
+app.use('/', patientRoute);
+app.use('/', fixMyTeeth);
 
 // Health check endpoint
 app.get('/health', (req, res) => {
@@ -43,9 +44,6 @@ app.get('/', (req, res) => {
     endpoints: ['/health', '/dental-registration', '/cbct-opg', '/diagnostic-lab', '/pharma-brand', '/user']
   });
 });
-=======
-app.use('/',patientRoute)
->>>>>>> 1fd4a0a200bf97af13ac72f6450a78146a183f6f
 
 
 app.listen(PORT, () => {
