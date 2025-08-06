@@ -7,12 +7,10 @@ const diagnosticLab=require('./Router/DiagnosticLabsRoutes')
 const Contact_US=require('./Router/Contact_Us_route');
 const PharmaBrand=require('./Router/PharmaBrandRoute');
 const patientRoute=require('./Router/patientRoute')
-<<<<<<< HEAD
-const appointmentRoute = require('./Router/appointment'); // ✅ correct
+const appointmentRoute = require('./Router/appointment');
+const cbctAppointment=require('./Router/cbct_Appointment')
+ 
 const cookieParser = require("cookie-parser");
-=======
-const fixMyTeeth = require('./Router/Fixmyteeth');
->>>>>>> 1ffc9b8ac9930d66964687063190be2284dab310
 require('dotenv').config();
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -29,33 +27,9 @@ app.use('/', Cbci_opg_data);
 app.use('/', DentalRegistration);
 app.use('/', diagnosticLab);
 app.use('/',PharmaBrand)
-<<<<<<< HEAD
 app.use('/',patientRoute)
 app.use('/',appointmentRoute)
-=======
-app.use('/', Contact_US);
-app.use('/', patientRoute);
-app.use('/', fixMyTeeth);
-
-// Health check endpoint
-app.get('/health', (req, res) => {
-  res.json({ 
-    status: 'OK', 
-    message: 'Backend server is running',
-    timestamp: new Date().toISOString()
-  });
-});
-
-// Root endpoint
-app.get('/', (req, res) => {
-  res.json({ 
-    message: 'Dental Tourism Clinics India Backend API',
-    status: 'Running',
-    endpoints: ['/health', '/dental-registration', '/cbct-opg', '/diagnostic-lab', '/pharma-brand', '/user']
-  });
-});
->>>>>>> 1ffc9b8ac9930d66964687063190be2284dab310
-
+app.use('/',cbctAppointment)
 
 app.listen(PORT, () => {
    database();

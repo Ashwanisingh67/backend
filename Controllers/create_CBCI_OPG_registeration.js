@@ -2,17 +2,17 @@ const sendmail = require('../helper/sendMail');
 const CBCT_OPG_Model = require('../Models/CBCT_OPG_Model');
 const CBCI_OPG_registeration = async (req, res) => {
   try {
-    const { centerName, OwnerName, email, phoneNumber, alternatePhoneNumber, websiteURL } = req.body;
+    const { centerName, ownerName, email, phoneNumber, alternatePhoneNumber, websiteURL } = req.body;
 
     // Validate required fields
-    if (!centerName || !OwnerName || !email || !phoneNumber || !websiteURL) {
+    if (!centerName || !ownerName || !email || !phoneNumber || !websiteURL) {
       return res.status(400).json({ message: 'Please fill all the required fields' ,success:false});
     }
 
     // Create a new CBCT_OPG document
     const newCBCT_OPG = new CBCT_OPG_Model({
       centerName,
-      OwnerName,
+      ownerName,
       email,
       phoneNumber,
       alternatePhoneNumber,
@@ -21,7 +21,7 @@ const CBCI_OPG_registeration = async (req, res) => {
 
     // Save the document to the database
     await newCBCT_OPG.save();
-    sendmail({centerName,OwnerName,email,phoneNumber,Registration:"CBCT & OPG"});
+    // sendmail({centerName,OwnerName,email,phoneNumber,Registration:"CBCT & OPG"});
 
     res.status(201).json({ message: 'CBCT OPG registration successful',success:true, data: newCBCT_OPG });
   } catch (error) {

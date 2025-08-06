@@ -2,7 +2,7 @@
 const jwt = require("jsonwebtoken");
 const patientModel = require("../Models/patientModel");
 
-const protect = async (req, res, next) => {
+const  auth= async (req, res, next) => {
   let token;
 
   try {
@@ -37,4 +37,4 @@ const protect = async (req, res, next) => {
   }
 };
 
-module.exports = { protect };
+module.exports = auth;
