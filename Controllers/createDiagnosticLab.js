@@ -1,4 +1,4 @@
-const DiagnosticLab = require('../Models/Diagnostic_Lab.model'); // 
+const DiagnosticLab = require('../Models/Diagnostic_Labmodel'); // 
 const createDiagnosticLab = async (req, res) => {
     try {
         const { labName, OwnerName, email, phoneNumber, alternativeNumber, websiteURL } = req.body;

@@ -1,4 +1,4 @@
-const DentalRegistrationModel = require('../Models/DentalRegistration.model');
+const DentalRegistrationModel = require('../Models/DentalRegistration_model');
 const getDentalRegistration=async(req,res)=>{
 try {
     const DentalRegistrationData=await DentalRegistrationModel.find();

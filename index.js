@@ -9,7 +9,9 @@ const PharmaBrand=require('./Router/PharmaBrandRoute');
 const patientRoute=require('./Router/patientRoute')
 const appointmentRoute = require('./Router/appointment');
 const cbctAppointment=require('./Router/cbct_Appointment')
- 
+const diagnosticAppointment=require('./Router/diagnosticAppointment_router')
+const dentalAppointment=require('./Router/dentalAppointmentRoute') 
+
 const cookieParser = require("cookie-parser");
 require('dotenv').config();
 const PORT = process.env.PORT || 3000;
@@ -30,6 +32,8 @@ app.use('/',PharmaBrand)
 app.use('/',patientRoute)
 app.use('/',appointmentRoute)
 app.use('/',cbctAppointment)
+app.use('/',diagnosticAppointment )
+app.use('/',dentalAppointment)
 
 app.listen(PORT, () => {
    database();

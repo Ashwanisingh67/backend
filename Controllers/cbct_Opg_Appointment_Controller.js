@@ -18,7 +18,7 @@ const bookCBCTAppointment = async (req, res) => {
     if (!["self", "other"].includes(bookingFor)) {
       return res.status(400).json({ message: "Invalid bookingFor value. Use 'self' or 'other'" });
     }
-    console.log(req.params.centerid);
+    // console.log(req.params.centerid);
     
     // Check CBCT center exists
     const cbctCenter = await CBCT_OPG.findById(centerId);

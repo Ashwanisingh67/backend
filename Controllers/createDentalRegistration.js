@@ -1,4 +1,4 @@
-const DentalRegistration = require("../Models/DentalRegistration.model");
+const DentalRegistration = require("../Models/DentalRegistration_model");
 const cloudinary = require("../config/Cloudinary");
 const getDataUri = require("../config/datauri");
 

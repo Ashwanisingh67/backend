@@ -1,4 +1,4 @@
-const DiagnosticLab = require('../Models/Diagnostic_Lab.model');
+const DiagnosticLab = require('../Models/Diagnostic_Labmodel');
 const getDiagnosticLab =async(req,res)=>{
 try {
     const labs = await DiagnosticLab.find({});
