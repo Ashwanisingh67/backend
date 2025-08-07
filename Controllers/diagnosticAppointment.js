@@ -32,14 +32,12 @@ const diagnosticAppointment=async(req,res)=>{
       personEmail,
       personPhone
    })
-    console.log(appointment._id);
-   diagnosticLab.appointments.push(appointment._id);
-  
-   
+    // console.log(appointment._id);
+   diagnosticLab.appointments.push(appointment._id); 
    await diagnosticLab.save();
 
    const patient=await patientModel.findById(bookedBy);
-   patient.diagnostic_appointments.push(labID._id);
+   patient.diagnostic_appointments.push(labID);
    await patient.save()
 
    const appointments=await appointmentModel.find({ bookedBy }).populate("bookedBy", "name email");
