@@ -8,14 +8,13 @@ const createContactUs = async (req, res) => {
       return res.status(400).json({ message: 'Please fill all the required fields', success: false });
     }
 
-    // Create a new contact us document
     const newContact = new ContactUS({
       name,
       email,
       message
     });
 
-    // Save the document to the database
+    
     await newContact.save();
 
     res.status(201).json({ message: 'Contact Us submission successful', data: newContact, success: true });

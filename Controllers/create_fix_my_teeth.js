@@ -4,66 +4,101 @@ const getDataUri = require("../config/datauri");
 
 const createFixMyTeeth = async (req, res) => {
   try {
-    let { name, email, selectedProblems, selectedState, otherProblemText, photoUrls } = req.body;
+    // Debugging logs
+    console.log("Request body:", req.body);
+    console.log("Request files:", req.files);
 
-    // Parse selectedProblems if needed
-    if (selectedProblems && typeof selectedProblems === 'string') {
+    // Initialize variables with proper defaults
+    const { 
+      name = '', 
+      email = '', 
+      selectedState = '', 
+      otherProblemText = '',
+      selectedProblems = '' // Initialize as string
+    } = req.body;
+
+    // Process selectedProblems - handle both string and array inputs
+    let problemsArray = [];
+    if (selectedProblems) {
       try {
-        selectedProblems = JSON.parse(selectedProblems);
+        // Try parsing as JSON if it looks like JSON
+        if (selectedProblems.startsWith('[') || selectedProblems.startsWith('{')) {
+          problemsArray = JSON.parse(selectedProblems);
+        } else {
+          // Handle comma-separated string
+          problemsArray = selectedProblems.split(',').map(p => p.trim());
+        }
       } catch (err) {
-        // ignore or handle
+        // Fallback to single problem
+        problemsArray = [selectedProblems];
       }
     }
 
-    // Default values
-    if (!Array.isArray(selectedProblems)) selectedProblems = selectedProblems ? [selectedProblems] : [];
-    if (!otherProblemText) otherProblemText = "";
+    // Ensure we have an array
+    if (!Array.isArray(problemsArray)) {
+      problemsArray = problemsArray ? [problemsArray] : [];
+    }
 
-    // Normalize photoUrls
-    let uploadedPhotoUrls = [];
-    if (photoUrls) {
-      // If photoUrls is a JSON-string, parse it
-      if (typeof photoUrls === 'string') {
-        try { uploadedPhotoUrls = JSON.parse(photoUrls); }
-        catch (err) { uploadedPhotoUrls = []; }
-      } else if (Array.isArray(photoUrls)) {
-        uploadedPhotoUrls = photoUrls;
+    // Handle file uploads according to your Multer config
+    const uploadedPhotoUrls = [];
+    
+    // Process 'file' field if exists
+    if (req.files && req.files.file) {
+      const file = Array.isArray(req.files.file) ? req.files.file[0] : req.files.file;
+      try {
+        const fileUri = getDataUri(file);
+        const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+        uploadedPhotoUrls.push(cloudResponse.secure_url);
+      } catch (uploadError) {
+        console.error("Error uploading file to Cloudinary:", uploadError);
       }
     }
 
-    // Handle files (uploads to Cloudinary)
-    const photoFiles = req.files && req.files.photo
-      ? (Array.isArray(req.files.photo) ? req.files.photo : [req.files.photo])
-      : [];
-
-    for (const file of photoFiles) {
-      const fileuri = getDataUri(file); // Should return { content: ... }
-      const cloudResponse = await cloudinary.uploader.upload(fileuri.content);
-      uploadedPhotoUrls.push(cloudResponse.secure_url);
+    // Process 'ClinicFile' field if exists
+    if (req.files && req.files.ClinicFile) {
+      const clinicFile = Array.isArray(req.files.ClinicFile) ? req.files.ClinicFile[0] : req.files.ClinicFile;
+      try {
+        const fileUri = getDataUri(clinicFile);
+        const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+        uploadedPhotoUrls.push(cloudResponse.secure_url);
+      } catch (uploadError) {
+        console.error("Error uploading ClinicFile to Cloudinary:", uploadError);
+      }
     }
 
     // Validate required fields
-    if (!name || !email || !selectedProblems.length || !selectedState) {
-      return res.status(400).json({ message: 'Please fill all required fields', success: false });
+    if (!name || !email || !problemsArray.length || !selectedState) {
+      return res.status(400).json({ 
+        message: 'Name, email, at least one problem, and state are required', 
+        success: false 
+      });
     }
 
-    // Create a new Fix My Teeth document
+    // Create new document
     const newFixMyTeeth = new FixMyTeeth({
       name,
       email,
-      selectedProblems,
+      selectedProblems: problemsArray,
       selectedState,
-      otherProblemText,
+      otherProblemText: otherProblemText || "",
       photoUrls: uploadedPhotoUrls
     });
 
-    // Save the document to the database
     await newFixMyTeeth.save();
 
-    res.status(201).json({ message: 'Fix My Teeth submission successful', data: newFixMyTeeth, success: true });
+    res.status(201).json({ 
+      message: 'Fix My Teeth submission successful', 
+      data: newFixMyTeeth, 
+      success: true 
+    });
+
   } catch (error) {
     console.error('Error during Fix My Teeth submission:', error);
-    res.status(500).json({ message: 'Internal server error', success: false });
+    res.status(500).json({ 
+      message: 'Internal server error', 
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined,
+      success: false 
+    });
   }
 };
 

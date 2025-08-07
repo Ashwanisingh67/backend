@@ -2,6 +2,7 @@ const express = require("express");
 const createFixMyTeeth = require("../Controllers/create_fix_my_teeth");
 const singleUpload = require("../Middleware/multer");
 const getFixMyTeeth = require("../Controllers/get_fix_my_teeth");
+const upload = require("../Middleware/multer");
 // Create a new router instance
 const router = express.Router();
 // Route to create a new Fix My Teeth entry
