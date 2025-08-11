@@ -14,7 +14,8 @@ const createFixMyTeeth = async (req, res) => {
       email = '', 
       selectedState = '', 
       otherProblemText = '',
-      selectedProblems = '' // Initialize as string
+      selectedProblems = '',
+        photo
     } = req.body;
 
     // Process selectedProblems - handle both string and array inputs
@@ -39,30 +40,62 @@ const createFixMyTeeth = async (req, res) => {
       problemsArray = problemsArray ? [problemsArray] : [];
     }
 
-    // Handle file uploads according to your Multer config
-    const uploadedPhotoUrls = [];
-    
-    // Process 'file' field if exists
-    if (req.files && req.files.file) {
-      const file = Array.isArray(req.files.file) ? req.files.file[0] : req.files.file;
-      try {
-        const fileUri = getDataUri(file);
-        const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
-        uploadedPhotoUrls.push(cloudResponse.secure_url);
-      } catch (uploadError) {
-        console.error("Error uploading file to Cloudinary:", uploadError);
+    // Normalize photoUrls if sent in request body
+    let uploadedPhotoUrls = [];
+    if (photo) {
+      if (typeof photo === 'string') {
+        try {
+          uploadedPhotoUrls = JSON.parse(photo);
+        } catch (err) {
+          uploadedPhotoUrls = [];
+        }
+      } else if (Array.isArray(photo)) {
+        uploadedPhotoUrls = photo;
       }
     }
+    console.log('Uploaded photo URLs so far:', uploadedPhotoUrls);
 
-    // Process 'ClinicFile' field if exists
-    if (req.files && req.files.ClinicFile) {
-      const clinicFile = Array.isArray(req.files.ClinicFile) ? req.files.ClinicFile[0] : req.files.ClinicFile;
+
+    // Process uploaded files in req.files (from multer .array('photo'))
+    const photoFiles = Array.isArray(req.files) ? req.files : [];
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+    const maxSize = 5 * 1024 * 1024; // 5MB
+
+    for (const file of photoFiles) {
+      // Validate file type
+      if (!allowedTypes.includes(file.mimetype)) {
+        return res.status(400).json({
+          message: `Only JPEG and PNG files are allowed. Invalid file type: ${file.mimetype}`,
+          success: false
+        });
+      }
+
+      // Validate file size
+      if (file.size > maxSize) {
+        return res.status(400).json({
+          message: "File size must be less than 5MB",
+          success: false
+        });
+      }
+
+      // Upload to Cloudinary
+      const fileuri = getDataUri(file); // { content: ... }
       try {
-        const fileUri = getDataUri(clinicFile);
-        const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+        const cloudResponse = await cloudinary.uploader.upload(fileuri.content, {
+          folder: 'fix_my_teeth',
+          resource_type: 'image',
+          quality: 'auto:good',
+          fetch_format: 'auto'
+        });
         uploadedPhotoUrls.push(cloudResponse.secure_url);
       } catch (uploadError) {
-        console.error("Error uploading ClinicFile to Cloudinary:", uploadError);
+        console.log('Cloudinary upload failed:', uploadError);
+        
+        return res.status(500).json({
+          
+          message: 'Error uploading one of the images. Please try again.',
+          success: false
+        });
       }
     }
 
@@ -80,18 +113,18 @@ const createFixMyTeeth = async (req, res) => {
       email,
       selectedProblems: problemsArray,
       selectedState,
-      otherProblemText: otherProblemText || "",
-      photoUrls: uploadedPhotoUrls
+      otherProblemText,
+      photo: uploadedPhotoUrls
     });
 
     await newFixMyTeeth.save();
+   
 
-    res.status(201).json({ 
-      message: 'Fix My Teeth submission successful', 
-      data: newFixMyTeeth, 
-      success: true 
+    res.status(201).json({
+      message: 'Fix My Teeth submission successful',
+      data: newFixMyTeeth,
+      success: true
     });
-
   } catch (error) {
     console.error('Error during Fix My Teeth submission:', error);
     res.status(500).json({ 

@@ -7,11 +7,12 @@ const DentalRegistration=require('./Router/DentalRegisterRoute');
 const diagnosticLab=require('./Router/DiagnosticLabsRoutes')
 const Contact_US=require('./Router/Contact_Us_route');
 const PharmaBrand=require('./Router/PharmaBrandRoute');
+const Fixmyteeth=require('./Router/Fixmyteeth');
+
 const patientRoute=require('./Router/patientRoute')
 const appointmentRoute = require('./Router/appointment');
  
 
-const cookieParser = require("cookie-parser");
 require('dotenv').config();
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -33,6 +34,8 @@ app.use('/', diagnosticLab);
 app.use('/',PharmaBrand)
 app.use('/',patientRoute)
 app.use('/',appointmentRoute)
+app.use('/', Contact_US);
+app.use('/',Fixmyteeth);
  
 app.listen(PORT, () => {
    database();
