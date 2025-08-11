@@ -1,6 +1,7 @@
 const nodemailer = require("nodemailer");
 const RegistrationEmail = require("./RegistrationEmail");
 const dotenv=require('dotenv');
+const DentalAppointmentEmail = require("./DentalAppointmentEmail");
 dotenv.config();
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
@@ -11,6 +12,36 @@ const transporter = nodemailer.createTransport({
     pass: process.env.USER_PASS, 
   },
 });
+
+const appointmentSendMail=async({
+  date,
+      time,
+      bookingFor,
+      bookedBy,
+      personName,
+      personEmail,
+      personPhone,
+  clinicName ,doctorName})=>{
+try {
+  const info = await transporter.sendMail({
+      from: `"Clinic" <${process.env.EMAIL_USER}>`,
+      to: personEmail,
+      // to: [email,"ankushyadav8437@gmail.com"],
+      subject: `Dental Tourism India,Appointment Confirmation`,
+      html: DentalAppointmentEmail({date,
+      time,
+      bookingFor,
+      bookedBy,
+      personName,
+      personEmail,
+      personPhone,clinicName,doctorName}),
+    });
+    console.log("Message sent: %s", info.messageId);
+} catch (error) {
+    console.error("Error sending email:", error);
+  }
+}
+
 
 const sendmail = async ({
   email,
@@ -44,4 +75,4 @@ const sendmail = async ({
   }
 };
 
-module.exports = sendmail;
+module.exports = {sendmail,appointmentSendMail};

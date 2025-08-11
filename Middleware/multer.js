@@ -22,6 +22,7 @@ const upload = multer({
 }).fields([
   { name: 'file', maxCount: 1 },
   { name: 'ClinicFile', maxCount: 1 }
+  
 ]);
 
 module.exports = upload;
