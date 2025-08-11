@@ -76,10 +76,7 @@ const dentalRegistrationSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  appointments: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Appointment"
-  }]
+  
 });
 
 const DentalRegistration = mongoose.model('DentalRegistration', dentalRegistrationSchema);
