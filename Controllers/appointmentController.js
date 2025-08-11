@@ -1,9 +1,11 @@
 // controllers/appointmentController.js
+const { appointmentSendMail } = require("../helper/sendMail");
 const Appointment = require("../Models/appointmentModel");
 
 const bookAppointment = async (req, res) => {
   try {
     const { date, time, bookingFor, personName, personEmail, personPhone } = req.body;
+    // console.log(req.body)
     const bookedBy = req.user._id; // from auth middleware
 
     // Validation
@@ -23,7 +25,19 @@ const bookAppointment = async (req, res) => {
       personEmail,
       personPhone
     });
-
+    const appointmentsdetails = await Appointment.find({ bookedBy: req.user._id })
+      .populate("bookedBy", "name email");
+console.log(appointmentsdetails)
+ appointmentSendMail({ personName,
+  personEmail,
+  personPhone,
+  personName,
+  date,
+  time,
+  bookedBy,
+  clinicName : "Our Dental Clinic", // Default value
+  doctorName : "Dr. Smith", // Default value
+  bookingFor : "General Checkup"})
     await appointment.save();
     res.status(201).json({ message: "Appointment booked successfully", appointment });
 

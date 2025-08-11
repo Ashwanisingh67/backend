@@ -7,7 +7,7 @@ const diagnosticAppointment=async(req,res)=>{
    const {date,time,bookingFor,personName,personEmail,personPhone}=req.body;
    const labID=req.params.labid;
    const bookedBy=req.user._id;
-   console.log(personPhone);
+  //  console.log(personPhone);
    
    if(!date||!time||!bookingFor||!personName||!personEmail||!personPhone){
     return res.status(400).json({

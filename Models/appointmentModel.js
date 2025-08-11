@@ -19,6 +19,20 @@ const appointmentSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId, 
     ref: "Patient", required: true }
 ],
+// clinicAppointments: [
+//   {
+//     appointmentType: {
+//       type: String,
+//       enum: ["CBCT_OPG", "DentalClinic", "Diagnostic"],
+//       required: true
+//     },
+//     appointmentRef: {
+//       type: mongoose.Schema.Types.ObjectId,
+//       required: true,
+//       refPath: 'clinicAppointments.appointmentType'
+//     }  
+//   }
+// ],
   personName: {
      type: String, 
     required: true, 

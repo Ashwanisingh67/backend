@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const cookieParser=require('cookie-parser')
 const database = require('./config/db');
 const Cbci_opg_data=require('./Router/Cbci_opg_dataRoute');
 const DentalRegistration=require('./Router/DentalRegisterRoute');
@@ -8,6 +9,8 @@ const Contact_US=require('./Router/Contact_Us_route');
 const PharmaBrand=require('./Router/PharmaBrandRoute');
 const patientRoute=require('./Router/patientRoute')
 const fixMyTeeth = require('./Router/Fixmyteeth');
+const appointment=require('./Router/appointment')
+const Payment=require('./Router/payment.routes')
 require('dotenv').config();
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -30,6 +33,8 @@ app.use('/',PharmaBrand)
 app.use('/', Contact_US);
 app.use('/', patientRoute);
 app.use('/', fixMyTeeth);
+app.use('/',Payment)
+app.use('/',appointment)
 
 // Health check endpoint
 app.get('/health', (req, res) => {
