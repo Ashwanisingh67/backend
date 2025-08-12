@@ -4,9 +4,6 @@ const getDataUri = require("../config/datauri");
 
 const createFixMyTeeth = async (req, res) => {
   try {
-    // Debugging logs
-    console.log("Request body:", req.body);
-    console.log("Request files:", req.files);
 
     // Initialize variables with proper defaults
     const { 
@@ -53,7 +50,6 @@ const createFixMyTeeth = async (req, res) => {
         uploadedPhotoUrls = photo;
       }
     }
-    console.log('Uploaded photo URLs so far:', uploadedPhotoUrls);
 
 
     // Process uploaded files in req.files (from multer .array('photo'))

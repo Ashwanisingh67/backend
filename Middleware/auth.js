@@ -1,6 +1,7 @@
 // middleware/authMiddleware.js
 const jwt = require("jsonwebtoken");
 const patientModel = require("../Models/patientModel");
+require('dotenv').config();
 
 const  auth= async (req, res, next) => {
   let token;
@@ -20,7 +21,7 @@ const  auth= async (req, res, next) => {
     }
 
  
-    const decoded = jwt.verify(token, "tarzen");
+    const decoded = jwt.verify(token, process.env.SECRET_KEY || "tarzen");
  
     const user = await patientModel.findById(decoded.id);
     if (!user) {
