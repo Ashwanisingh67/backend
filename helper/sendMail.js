@@ -17,11 +17,11 @@ const appointmentSendMail=async({
   date,
       time,
       bookingFor,
-      bookedBy,
+      appointmentBookerName,
       personName,
       personEmail,
       personPhone,
-  clinicName ,doctorName})=>{
+  clinicName ,phoneNumber})=>{
 try {
   const info = await transporter.sendMail({
       from: `"Clinic" <${process.env.EMAIL_USER}>`,
@@ -31,10 +31,10 @@ try {
       html: DentalAppointmentEmail({date,
       time,
       bookingFor,
-      bookedBy,
+      appointmentBookerName,
       personName,
       personEmail,
-      personPhone,clinicName,doctorName}),
+      personPhone,clinicName,phoneNumber}),
     });
     console.log("Message sent: %s", info.messageId);
 } catch (error) {

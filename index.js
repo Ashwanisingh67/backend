@@ -12,6 +12,7 @@ const Fixmyteeth=require('./Router/Fixmyteeth');
 const patientRoute=require('./Router/patientRoute')
 const appointmentRoute = require('./Router/appointment');
  
+const payment=require('./Router/payment.routes')
 
 require('dotenv').config();
 const PORT = process.env.PORT || 3000;
@@ -36,6 +37,7 @@ app.use('/',patientRoute)
 app.use('/',appointmentRoute)
 app.use('/', Contact_US);
 app.use('/',Fixmyteeth);
+app.use('/',payment)
  
 app.listen(PORT, () => {
    database();
