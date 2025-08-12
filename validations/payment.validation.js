@@ -1,20 +1,19 @@
 const Joi = require('joi');
 
-const dentalServiceSchema = Joi.object({
-  serviceId: Joi.string().valid(
-    'dental_cleaning',
-    'dental_filling',
-    'dental_root_canal'
-  ).required(),
-  patientId: Joi.string().required()
-});
-
-const verifyPaymentSchema = Joi.object({
-  paymentId: Joi.string().required(),
-  orderId: Joi.string().required()
+const subscriptionPaymentSchema = Joi.object({
+  planType: Joi.string().valid('basic', 'growth', 'premium').required()
+    .messages({
+      'any.required': 'Plan type is required',
+      'string.empty': 'Plan type cannot be empty',
+      'any.only': 'Plan type must be basic, growth, or premium'
+    }),
+  clinicId: Joi.string().required()
+    .messages({
+      'any.required': 'Clinic ID is required',
+      'string.empty': 'Clinic ID cannot be empty'
+    })
 });
 
 module.exports = {
-  validateDentalServiceRequest: (data) => dentalServiceSchema.validate(data),
-  validateVerification: (data) => verifyPaymentSchema.validate(data)
-};// console.log()
+  validateSubscriptionPayment: (data) => subscriptionPaymentSchema.validate(data, { abortEarly: false })
+};

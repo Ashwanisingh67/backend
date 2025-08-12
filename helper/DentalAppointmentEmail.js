@@ -5,10 +5,10 @@ const DentalAppointmentEmail = ({
   date,
   time,
   clinicName,
-  doctorName,
+  phoneNumber,
   // console.log()
   bookingFor,
-  bookedBy,
+  appointmentBookerName,
   address
 }) => {
   return `
@@ -36,7 +36,7 @@ const DentalAppointmentEmail = ({
               <!-- Greeting -->
               <tr>
                 <td style="padding: 30px;">
-                  <p style="margin-bottom: 15px; color: #333;">Dear ${bookedBy},</p>
+                  <p style="margin-bottom: 15px; color: #333;">Dear ${appointmentBookerName},</p>
                   <p style="margin-bottom: 20px; color: #555; line-height: 1.6;">
                     Your dental appointment has been successfully scheduled. Below are your appointment details:
                   </p>
@@ -53,8 +53,9 @@ const DentalAppointmentEmail = ({
                       <td>${clinicName}</td>
                     </tr>
                     <tr>
-                      <td><strong>Doctor:</strong></td>
-                      <td>Dr. ${doctorName}</td>
+                      <td><strong>phoneNumber:</strong></td>
+                      <td>
+                      +91-${phoneNumber}</td>
                     </tr>
                     <tr>
                       <td><strong>Date:</strong></td>

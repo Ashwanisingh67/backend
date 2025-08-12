@@ -2,13 +2,16 @@ const Appointment = require("../Models/appointmentModel");
 const CBCT_OPG = require("../Models/CBCT_OPG_Model");
 const DentalClinic = require("../Models/DentalRegistration_model");
 const DiagnosticLab = require("../Models/Diagnostic_Labmodel");
+const { appointmentSendMail } = require("../helper/sendMail");
 
 // Book appointment — Only logged-in user
 const bookAppointment = async (req, res) => {
   try {
-    const { date, time, bookingFor, personName, personEmail, personPhone } = req.body;
+    const { date, time, bookingFor, personName, personEmail, personPhone} = req.body;
     const { type, centerId } = req.params; 
     const bookedBy = req.user._id;
+    const appointmentBookerName=req.user.name
+
 
     // Validate required fields
     if (!date || !time || !centerId || !type || !personName || !personEmail || !personPhone) {
@@ -17,9 +20,28 @@ const bookAppointment = async (req, res) => {
 
     // Find provider based on type
     let providerFound;
-    if (type === "cbct") providerFound = await CBCT_OPG.findById(centerId);
-    if (type === "dental") providerFound = await DentalClinic.findById(centerId);
-    if (type === "lab") providerFound = await DiagnosticLab.findById(centerId);
+    let clinicName = "";
+    let doctorName = ""; // Default value for doctor name
+
+    if (type === "cbct") {
+      providerFound = await CBCT_OPG.findById(centerId);
+      if (providerFound) {
+        clinicName = providerFound.centerName;
+        phoneNumber = providerFound.phoneNumber; // Assuming ownerName is the doctor's name
+      }
+    } else if (type === "dental") {
+      providerFound = await DentalClinic.findById(centerId);
+      if (providerFound) {
+        clinicName = providerFound.ClinicName;
+        phoneNumber = providerFound.ClinicPhoneNumber; // Assuming name is the doctor's name
+      }
+    } else if (type === "lab") {
+      providerFound = await DiagnosticLab.findById(centerId);
+      if (providerFound) {
+        clinicName = providerFound.labName;
+        phoneNumber = providerFound.phoneNumber; // Assuming OwnerName is the doctor's name
+      }
+    }
 
     if (!providerFound) {
       return res.status(404).json({ message: "Provider not found" });
@@ -42,6 +64,19 @@ const bookAppointment = async (req, res) => {
 
     const newAppointment = await Appointment.create(appointmentData);
 
+    // Send appointment confirmation email
+    await appointmentSendMail({
+      personName,
+      personEmail,
+      personPhone,
+      date,
+      time,
+      appointmentBookerName,
+      clinicName,
+      phoneNumber:phoneNumber,
+      bookingFor
+    });
+
     res.status(201).json({
       message: "Appointment booked successfully",
       appointment: newAppointment,
@@ -51,6 +86,8 @@ const bookAppointment = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
+    
 
 // Get all appointments of logged-in user
 const getAppointments = async (req, res) => {
