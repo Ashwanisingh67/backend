@@ -12,10 +12,11 @@ const Fixmyteeth=require('./Router/Fixmyteeth');
 const patientRoute=require('./Router/patientRoute')
 const appointmentRoute = require('./Router/appointment');
  
-const payment=require('./Router/payment.routes')
+const payment=require('./Router/payment.routes');
+const allclics=require('./Router/allclinics')
 
 require('dotenv').config();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 const app = express();
 // const fileUpload=require('express-fileupload')
 
@@ -23,7 +24,7 @@ app.use(express.json())
 // app.use(fileUpload())
 //middleware
 app.use(cors({
-  origin: 'http://localhost:3001', // Frontend URL
+  origin: 'http://localhost:3000', // Frontend URL
   credentials: true
 }));
 app.use(express.urlencoded({ extended: true }));
@@ -38,6 +39,7 @@ app.use('/',appointmentRoute)
 app.use('/', Contact_US);
 app.use('/',Fixmyteeth);
 app.use('/',payment)
+app.use('/',allclics)
  
 app.listen(PORT, () => {
    database();
