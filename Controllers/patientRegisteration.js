@@ -1,3 +1,4 @@
+const { sendmail } = require('../helper/sendMail');
 const patientModel=require('../Models/patientModel')
 const bcrypt = require('bcrypt');
 const userRegistration = async (req, res) => {
@@ -25,6 +26,7 @@ const userRegistration = async (req, res) => {
       email,
       password: hashedPassword
     });
+    await sendmail({name,email,phone,Registration:"Patient"});
 
     // Save the document to the database
     await newUser.save();

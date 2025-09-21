@@ -1,6 +1,7 @@
 const FixMyTeeth = require('../Models/Fix_my_teeth');
 const cloudinary = require("../config/Cloudinary");
 const getDataUri = require("../config/datauri");
+const {FixMyTeethappointmentSendMail}=require("../helper/sendMail")
 
 const createFixMyTeeth = async (req, res) => {
   try {
@@ -112,6 +113,14 @@ const createFixMyTeeth = async (req, res) => {
       otherProblemText,
       photo: uploadedPhotoUrls
     });
+
+    await FixMyTeethappointmentSendMail({
+       name:name,
+  email:email,
+  selectedProblems:selectedProblems,
+  selectedState:selectedState,
+  otherProblemText:otherProblemText,
+  photo:photo,})
 
     await newFixMyTeeth.save();
    

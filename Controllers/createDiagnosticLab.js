@@ -1,3 +1,4 @@
+const { sendmail } = require('../helper/sendMail');
 const DiagnosticLab = require('../Models/Diagnostic_Labmodel'); // 
 const createDiagnosticLab = async (req, res) => {
     try {
@@ -13,6 +14,10 @@ const createDiagnosticLab = async (req, res) => {
         alternativeNumber,
         websiteURL
     });
+
+    await sendmail({labName,OwnerName,email,phoneNumber,Registration:"Diagnostic Lab"})
+    
+
     await newLab.save();
     return res.status(201).json({ message: 'Diagnostic lab created successfully', lab: newLab ,success:true});
 } catch (error) {

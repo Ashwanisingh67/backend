@@ -4,7 +4,11 @@ const DentalTourismRegistrationEmail = ({
   phoneNumber,
   centerName,
   labName,
+  ownerName,
   OwnerName,
+  ClinicName,
+  phone,
+
   brandName
 }) => {
   return `
@@ -21,7 +25,6 @@ const DentalTourismRegistrationEmail = ({
               <!-- Header with Dental Theme -->
               <tr>
                 <td style="background: linear-gradient(to right, #1455bcff, #060ea5ff); color: white; padding: 30px; text-align: center;">
-                  <img src="https://example.com/logo.png" alt="Dental Tourism India" width="120" style="margin-bottom: 15px;">
                   <h2 style="margin: 10px 0 0; font-size: 28px; font-weight: 600;">Welcome to Dental Tourism India!</h2>
                   <p style="margin: 5px 0 0; font-size: 16px;">Your Journey to a Perfect Smile Begins Here</p>
                 </td>
@@ -30,7 +33,11 @@ const DentalTourismRegistrationEmail = ({
               <!-- Greeting -->
               <tr>
                 <td style="padding: 30px;">
-                  <p style="margin-bottom: 15px; color: #333;">Dear ${name},</p>
+                 <p style="margin-bottom: 15px; color: #333;">
+ Dear ${name || ownerName || OwnerName || "sir/madam"},
+
+
+</p>
                   <p style="margin-bottom: 20px; color: #555; line-height: 1.6;">
                     Thank you for choosing Dental Tourism India for your dental treatment. 
                     We're honored to be part of your healthcare journey and look forward to serving you.
@@ -40,7 +47,7 @@ const DentalTourismRegistrationEmail = ({
                   <table width="100%" cellpadding="12" cellspacing="0" style="background-color: #e0f7fa; border-radius: 8px; margin: 20px 0; border: 1px solid #b2ebf2;">
                     <tr>
                       <td colspan="2" style="border-bottom: 1px solid #b2ebf2;">
-                        <strong style="color: #00796b; font-size: 16px;">Your Treatment Details</strong>
+                        <strong style="color: #00796b; font-size: 16px;">Your Registration Details</strong>
                       </td>
                     </tr>
                     <tr>
@@ -57,6 +64,18 @@ const DentalTourismRegistrationEmail = ({
                       <td>${name}</td>
                     </tr>
                     ` : ''}
+                   
+
+                    ${
+                         ClinicName
+                           ? `
+                    <tr>
+                      <td><strong>Clinic Name:</strong></td>
+                      <td>${ClinicName}</td>
+                    </tr>
+                    `
+                           : ""
+                       }
                     
                     ${!labName && !name && brandName ? `
                     <tr>
@@ -77,11 +96,11 @@ const DentalTourismRegistrationEmail = ({
                        }
                        
                     ${
-                      OwnerName
+                      ownerName || OwnerName
                         ? `
                     <tr>
                       <td><strong>Owner Name:</strong></td>
-                      <td>${OwnerName}</td>
+                      <td>${ownerName || OwnerName}</td>
                     </tr>
                     `
                         : ""
@@ -92,7 +111,7 @@ const DentalTourismRegistrationEmail = ({
                     </tr>
                     <tr>
                       <td><strong>Phone:</strong></td>
-                      <td>${phoneNumber || "Not provided"}</td>
+                      <td>${phoneNumber ||phone || "Not provided"}</td>
                     </tr>
                   </table>
 
@@ -123,9 +142,6 @@ const DentalTourismRegistrationEmail = ({
                   <table width="100%" cellpadding="0" cellspacing="0" style="margin: 30px 0;">
                     <tr>
                       <td align="center">
-                        <a href="https://dentaltourismindia.com/my-account" style="display: inline-block; padding: 12px 30px; background: linear-gradient(to right, #000079ff, #003c96ff); color: white; text-decoration: none; border-radius: 50px; font-weight: 500; margin: 0 10px;">
-                          View Your Account
-                        </a>
                         <a href="https://dentaltourismindia.com/contact" style="display: inline-block; padding: 12px 30px; background: #ffffff; color: #001a79ff; text-decoration: none; border-radius: 50px; font-weight: 500; border: 2px solid #004379ff; margin: 0 10px;">
                           Contact Us
                         </a>

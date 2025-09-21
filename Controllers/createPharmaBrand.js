@@ -1,4 +1,4 @@
-const sendmail = require("../helper/sendMail");
+const {sendmail} = require("../helper/sendMail");
 const PharmaBrand = require("../Models/PharmaBrand.model");
 const createPharmaBrand = async (req, res) => {
   try {
@@ -24,8 +24,10 @@ const createPharmaBrand = async (req, res) => {
       alternativeNumber,
       websiteURL,
     });
+
+    await  sendmail({OwnerName,email,phoneNumber,brandName,Registration:"Pharma Brand"});
     await newBrand.save();
-    sendmail({OwnerName,email,phoneNumber,brandName,Registration:"Pharma Brand"});
+   
     return res
       .status(201)
       .json({
