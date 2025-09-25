@@ -16,7 +16,7 @@ const payment=require('./Router/payment.routes');
 const allclics=require('./Router/allclinics')
 
 require('dotenv').config();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 const app = express();
 // const fileUpload=require('express-fileupload')
 

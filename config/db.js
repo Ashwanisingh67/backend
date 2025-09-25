@@ -1,13 +1,11 @@
 const mongoose = require('mongoose');
-require('dotenv').config();
-
-const database = async () => {
+const database=async (req,res) => {
   try {
-    await mongoose.connect('mongodb://localhost:27017/dentalclinic'|| process.env.MONGO_URL)
+    await mongoose.connect("mongodb+srv://A85308660:Ox1D4Xla6z1N3hkr@dentalclinic.oolb9je.mongodb.net/dentaltourismclinicsindia")
       console.log('Database connected successfully');
   } catch (error) {
     console.error('Database connection failed:', error);
   }
-};
+}
 
 module.exports = database;

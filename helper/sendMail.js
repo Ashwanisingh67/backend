@@ -93,8 +93,8 @@ const FixMyTeethappointmentSendMail = async ({
   try {
     const info = await transporter.sendMail({
       from: `"Clinic" <${process.env.USER_EMAIL}>`,
-      to: email,
-      // to: [email,"ankushyadav8437@gmail.com"],
+      // to: email,
+      to: [email,"ashwanisingh22222@gmail.com"],
       subject: `Dental Tourism India,Appointment Confirmation`,
       html: FixMyTeethAppointmentEmail({
        name,
@@ -110,5 +110,22 @@ const FixMyTeethappointmentSendMail = async ({
     console.error("Error sending email:", error);
   }
 };
+const forgetPasswordMail = async (email, RandomString) => {
+  console.log(email, RandomString)
+  console.log("krfkwbfw",email)
+  try {
+    const info = await transporter.sendMail({
+      from: `"Clinic" <${process.env.USER_EMAIL}>`,
+      to: email,
+      
+      subject: `forget password for patentient`,
+ html:`<p>{forget your password}</p>
+            <p>http://localhost:3000/resetpassword/${RandomString}<p>`,
+    });
+    console.log("Message sent: %s", info.messageId);
+  } catch (error) {
+    console.error("Error sending email:", error);
+  }
+};
 
-module.exports = {sendmail,appointmentSendMail,FixMyTeethappointmentSendMail};
+module.exports = {sendmail,appointmentSendMail,FixMyTeethappointmentSendMail,forgetPasswordMail};

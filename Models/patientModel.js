@@ -26,6 +26,11 @@ const patientSchema = new mongoose.Schema({
         trim: true,
         minlength: 6
     },
+    token:{
+        type:String,
+        default:""
+
+    },
     CBCT_OPG_appointments:[
         {
             type:mongoose.Schema.Types.ObjectId,
